@@ -18,7 +18,6 @@ then
    printf "$sl_password\n$vip_access\n" | sudo openconnect --user $username --passwd-on-stdin $hostname
 else
    unset hostname
-   echo "Setting up new connection for 1st time."
    read -p "Enter Hostname to openconnect: " hostname
    echo $hostname > $HostnameFile
    unset username
