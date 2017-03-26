@@ -18,6 +18,7 @@ then
    printf "$sl_password\n$vip_access\n" | sudo openconnect --user $username --passwd-on-stdin $hostname
 else
    unset hostname
+   echo "Setting up new connection for 1st time."
    read -p "Enter Hostname to openconnect: " hostname
    echo $hostname > $HostnameFile
    unset username
@@ -25,11 +26,11 @@ else
    read -p "Enter Username: " username
    prompt="Enter Password: "
    while IFS= read -p "$prompt" -r -s -n 1 char
-        do
-                if [[ $char == $'\0' ]]
-                        then
+	do
+        	if [[ $char == $'\0' ]]
+                	then
                         break
-                fi  
+        	fi
                 prompt='*'
                 password+="$char"
         done
@@ -67,10 +68,12 @@ USAGE: openconnect
 
 '
 
-if [[ $1 == "-r" && -f $EncryptedFile ]];
+if [[ $1 == '-r' ]]; 
 then
-   rm $EncryptedFile
-elif [ $1 == "-h" ];
+   echo "Refresh mode: Setting up new connection for 1st time."
+   [[ -f $EncryptedFile ]] && rm $EncryptedFile
+fi
+if [[ $1 == '-h' ]];
 then
    echo "$helpText"
    exit
